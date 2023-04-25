@@ -13,7 +13,7 @@ session_start();
     <title>Plataforma IoT</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
     <link rel="stylesheet" href="style.css" />
-    <meta http-equiv="refresh" content="1">
+    <!--<meta http-equiv="refresh" content="1">-->
 </head>
 
 <body>
@@ -45,6 +45,16 @@ session_start();
     $valor_temperatura = file_get_contents("api/files/temperatura/valor.txt");
     $hora_temperatura = file_get_contents("api/files/temperatura/hora.txt");
     $nome_temperatura = file_get_contents("api/files/temperatura/nome.txt");
+
+    $valor_humidade = file_get_contents("api/files/humidade/valor.txt");
+    $hora_humidade = file_get_contents("api/files/humidade/hora.txt");
+
+    if (isset($_POST['valor']) && isset($_POST['hora']) && isset($_POST['nome'])) {
+
+        file_put_contents("files/" . $_POST['nome'] . "/valor.txt", $_POST['valor']);
+        file_put_contents("files/" . $_POST['nome'] . "/hora.txt", $_POST['hora']);
+        file_put_contents("files/" . $_POST['nome'] . "/log.txt", $_POST['hora'] . "; " . $_POST['valor'] . PHP_EOL, FILE_APPEND);
+    }
 
 
     //echo $nome_temperatura . ": " . $valor_temperatura . "ºC em " . $hora_temperatura;
@@ -81,13 +91,14 @@ session_start();
     <!-- Topo da pagina -->
     <div class="container rounded text-center">
         <img class="bg-image2" src="imagens/banner_estg_2.png">
-        <h1 class=" card-title">Controlo de ambiente da ESTG</h1>
+        <h1 class="titulo">Controlo de ambiente da ESTG</h1>
     </div>
 
     <!-- Conteudo -->
     <!-- Temperatura e Ar Condicionado -->
     <div class="container rounded text-center" id="menuPainel">
         <div class="row">
+            <p> Fora do Edificio </p>
             <div class="col-sm-6">
                 <div class="card">
                     <!--O valor da temperatura é dinamico, porque utiliza uma variavel php-->
@@ -97,18 +108,25 @@ session_start();
                     <div class="card-body">
                         <p><?php echo $valor_temperatura ?>ºC</p>
                     </div>
+                    <div class="card-footer">
+                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                    </div>
                 </div>
             </div>
 
             <div class="col-sm-6">
                 <div class="card">
-                    <div class="card-header sensor">Ar Condicionado:</div>
+                    <div class="card-header atuador">Humidade:</div>
                     <div class="card-body">
-                        <p>Ligado/Desligado<?php echo $valor_arcondicionado ?></p>
+                        <p>40<?php echo $valor_humidade ?>%</p>
+                    </div>
+                    <div class="card-footer">
+                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
                     </div>
                 </div>
+
             </div>
-            <p>Atualização: <?php echo $hora_temperatura ?> - <a href="#">Histórico</a></p>
+
         </div>
     </div>
 
@@ -119,11 +137,13 @@ session_start();
             <div class="col-sm-6">
                 <div class="card">
                     <!--O valor da temperatura é dinamico, porque utiliza uma variavel php-->
-                    <div class="card-header sensor">Nivel de dioxido de carbono:</div>
+                    <div class="card-header sensor">Nivel de Dioxido de Carbono:</div>
                     <div class="card-body">
-                        Boa/Baixa<?php echo $qualidade_do_ar ?>
+                        Ligada/Desligada<?php echo $estado_luz ?>
                     </div>
-
+                    <div class="card-footer">
+                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                    </div>
                 </div>
             </div>
 
@@ -133,24 +153,47 @@ session_start();
                     <div class="card-body">
                         Ligado/Desligado<?php echo $qualidade_do_ar ?>
                     </div>
+                    <div class="card-footer">
+                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                    </div>
                 </div>
             </div>
-            <p>Atualização: <?php echo $hora_temperatura ?> - <a href="#">Histórico</a></p>
+        </div>
+    </div>
+
+    <!-- Luz -->
+    <div class="container rounded text-center" id="menuPainel">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <!--O valor da temperatura é dinamico, porque utiliza uma variavel php-->
+                    <div class="card-header sensor">Luz:</div>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-outline-secondary">Ligado/Desligado<?php echo $qualidade_do_ar ?></button></a></p>
+                    </div>
+                    <div class="card-footer">
+                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header sensor">Eletricidade:</div>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-outline-secondary">Ligado/Desligado<?php echo $qualidade_do_ar ?></button></a></p>
+                    </div>
+                    <div class="card-footer">
+                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
 
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    <footer style="
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    background: #ebebe0;
-    border-bottom:3px solid  #c2c2a3;
-    ">
+    <footer>
         <img src="imagens/estg_h-01.png" alt="logo da estg" style="max-height: 50px;">
     </footer>
 </body>

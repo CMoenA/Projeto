@@ -8,36 +8,32 @@ $data_hora = date("Y/m/d H:i");
 
 //echo $_SERVER['REQUEST_METHOD'];
 
+//receber temperatura
+//receber estado do ar condicionado
+
+//receber nivel de dioxido de carbono
+//receber estado Aviso luminoso Janela
+
+//Receber 
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     echo "recebi um POST ";
-    //print_r($_POST);
+    //print_r($_POST);//ver os valores, para confirmar se esta tudo bem.
     //escrever para um ficheiro a variavel valor do $_POST
-    if (isset($_POST['valor'])) {
-        echo file_put_contents("files/temperatura/valor.txt", $_POST['valor']);
-    }
-    if (isset($_POST['hora'])) {
-        echo file_put_contents("files/temperatura/hora.txt", $_POST['hora']);
-    }
-    if (isset($_POST['nome'])) {
-        echo file_put_contents("files/temperatura/nome.txt", $_POST['nome']);
-    }
-    if (isset($_POST['nome'])) {
-        echo file_put_contents("files/temperatura/log.txt", "\n" . $data_hora . "; " . $_POST['valor'], FILE_APPEND);
-    }
-    echo " valor : " . $_POST['valor'] . " Data e hora: " . $_POST['hora']; //para ver cada variavel, neste caso é apresentado o valor da variavel valor
-    echo $_POST['hora'];
-    var_dump(file_get_contents("php://input"));
+    if (isset($_POST['valor']) && isset($_POST['hora']) && isset($_POST['nome'])) {
 
-    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        if (isset($_GET['nome'])) {
-            $$valor = file_get_contents($_GET['nome'] . '.txt');
-            echo $valor;
-        } else {
-            echo "Faltam parâmetros no GET.";
-        }
+        file_put_contents("files/" . $_POST['nome'] . "/valor.txt", $_POST['valor']);
+        file_put_contents("files/" . $_POST['nome'] . "/hora.txt", $_POST['hora']);
+        file_put_contents("files/" . $_POST['nome'] . "/log.txt", $_POST['hora'] . "; " . $_POST['valor'] . PHP_EOL, FILE_APPEND);
     }
-} elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
-    echo "recebi um GET";
+} elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if (isset($_GET['nome'])) {
+        //IS_DIR
+        echo $valor = file_get_contents("files/" . $_GET['nome'] . "/valor.txt");
+        echo $hora = file_get_contents("files/" . $_GET['nome'] . "/hora.txt");
+    } else {
+        echo "Faltam parâmetros no GET.";
+    }
 } else {
     echo "metodo nao permitido";
 }
