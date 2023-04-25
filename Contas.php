@@ -32,6 +32,7 @@ session_start();
     $password_hash = '$2y$10$EH6eVpRDz2mSSQU2cRk1guyFGFXqt5VhsYD9VbwOOZ6EMPNjpzDUG';
     $password_hash = '$2y$10$FRXYu/ulXe3gYi1CefWcwuv1xmcE/.N4wHpxEVSyDE7Pee4wSE2Vq';
     $password_hash = '$2y$10$6vTUi9BgduVdaRuIzCdvJ.e/XvzkJg/tRg41.NOC5hfihUGU5iRLq';
+    $password_hash = '$2y$10$0xfIH4rxPwCnNf9ZaAlEF.WaRlLeyhsrFBb1VSW11kGzfLRkDNzd.';
     
 
     ?>
