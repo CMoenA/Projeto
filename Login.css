@@ -1,0 +1,83 @@
+/* Borda */
+form 
+    {
+    border: 3px solid #f1f1f1;
+    }
+  
+  /* Input com largura completa  */
+  input[type=text], input[type=password] 
+    {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    }
+  
+  /* Estilo para os botões */
+  button 
+    {
+    background-color: green;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    }
+  
+  /* Efeito hover para os botões (para quando passar o mouse por cima) */
+  button:hover 
+    {
+    opacity: 1.2;
+    }
+  
+  /* Estilo extra para os botões de cancelamento (Os que são vermelhos) */
+  .cancelbtn 
+    {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #e0c7c5;
+    }
+  
+  /* Alinhar a imagem no centro deste container */
+  .imgcontainer 
+    {
+    text-align: center;
+    margin: 24px 0 12px 0;
+    }
+  
+  /* Avatar image */
+  img.avatar 
+    {
+    width: 40%;
+    border-radius: 50%;
+    }
+  
+  /* Preenchinmento para os containers */
+  .container 
+    {
+    padding: 16px;
+    }
+  
+  /* Texto de "Esqueceu a senha" */
+  span.psw 
+    {
+    float: right;
+    padding-top: 16px;
+    }
+  
+  /* Mudança de estilo para telas menores */
+  @media screen and (max-width: 300px) 
+  {
+    span.psw 
+    {
+      display: block;
+      float: none;
+    }
+    .cancelbtn {
+      width: 100%;
+    }
+  }
+  

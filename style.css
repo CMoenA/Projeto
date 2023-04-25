@@ -1,0 +1,18 @@
+.bg-image2{
+    height:200px;
+    width: 500px;
+    left: 0;
+    width: 100%;
+    padding:0px;
+    object-fit: cover;
+}
+
+#menuPainel{
+    background-color:  #ebebe0;
+    margin-top: 20px;
+}
+
+.card{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
