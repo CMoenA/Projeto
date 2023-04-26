@@ -17,6 +17,10 @@ session_start();
 </head>
 
 <body>
+
+
+
+
     <?php
 
     //iniciar a sessoao
@@ -34,20 +38,59 @@ session_start();
     //inserção na primeira linha de código PHP:
 
     //echo "\n Dash. Sessao username: " . $_SESSION["username"];
-    $valor_temperatura = file_get_contents("api/files/temperatura/valor.txt");
-    $hora_temperatura = file_get_contents("api/files/temperatura/hora.txt");
-    $nome_temperatura = file_get_contents("api/files/temperatura/nome.txt");
 
-    $valor_humidade = file_get_contents("api/files/humidade/valor.txt");
-    $hora_humidade = file_get_contents("api/files/humidade/hora.txt");
+    $msgValorNaoEncontrado = "Value not Found!";
 
+    //$json_temperature = file_get_contents("http://127.0.0.1/projeto/api/api.php?name=temperature");
+    $temperature = json_decode(file_get_contents("http://127.0.0.1/projeto/api/api.php?name=temperature"));
+    $temperature->hour;
+    $temperature->value;
+
+    /*
+    todo maybe, validatetion seke
+    if (!isset($temperature->hour)) {
+        $temperature->hour = $msgValorNaoEncontrado;
+    }
+    if (!isset($temperature->value)) {
+        $temperature->hour = $msgValorNaoEncontrado;
+    }
+    */
+
+    $temperature_log = json_decode(file_get_contents("http://127.0.0.1/projeto/api/api.php?name=temperature&log=s"));
+
+
+    $humidity = json_decode(file_get_contents("http://127.0.0.1/projeto/api/api.php?name=humidity"));
+
+
+    $dioxideCarbonLevel = json_decode(file_get_contents("http://127.0.0.1/projeto/api/api.php?name=dioxideCarbonLevel"));
+    $dioxideCarbonLevel->hour;
+    $dioxideCarbonLevel->value;
+
+    $warningOpenWindow = json_decode(file_get_contents("http://127.0.0.1/projeto/api/api.php?name=warningOpenWindow"));
+    $warningOpenWindow->hour;
+    $warningOpenWindow->value;
+
+    $light = json_decode(file_get_contents("http://127.0.0.1/projeto/api/api.php?name=light"));
+    $light->hour;
+    $light->value;
+
+    $electricity = json_decode(file_get_contents("http://127.0.0.1/projeto/api/api.php?name=electricity"));
+    $electricity->hour;
+    $electricity->value;
+
+
+
+
+
+
+    /*
     if (isset($_POST['valor']) && isset($_POST['hora']) && isset($_POST['nome'])) {
 
         file_put_contents("files/" . $_POST['nome'] . "/valor.txt", $_POST['valor']);
         file_put_contents("files/" . $_POST['nome'] . "/hora.txt", $_POST['hora']);
         file_put_contents("files/" . $_POST['nome'] . "/log.txt", $_POST['hora'] . "; " . $_POST['valor'] . PHP_EOL, FILE_APPEND);
     }
-
+*/
 
     //echo $nome_temperatura . ": " . $valor_temperatura . "ºC em " . $hora_temperatura;
 
@@ -57,15 +100,20 @@ session_start();
     encontra-se tambem:  opção Home, Historico e o botão Logout-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><b>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="historico.php">Historico</a>
+                    </li>
                 </ul>
 
-                <!--ao selecioar Logout, é redirecionado para a pagina logout,
-                onde é terminado a sessão do utilizador e redirecionado para a pagina index-->
-                <a href="login.php"><button type="button" class="btn btn-outline-dark" href="logout.php">Login</button></a>
+                <!--ao selecioar login, é redirecionado para a pagina login,
+                onde é iniciado a sessão do utilizador e redirecionado para a pagina Dashboard-->
+                <a href="login.php"><button type="button" class="btn btn-outline-dark" href="login.php">Login</button></a>
 
             </div>
         </div>
@@ -76,6 +124,16 @@ session_start();
         <img class="bg-image2" src="imagens/banner_estg_2.png">
         <h1 class="titulo">Controlo de ambiente da ESTG</h1>
     </div>
+
+    <?php
+    $_SESSION['logName'] = null;
+    function php_logNameSet(string $x)
+    {
+        $_SESSION['logName'] = $x;
+    }
+    php_logNameSet('temperature');
+    ?>
+
 
     <!-- Conteudo -->
     <!-- Temperatura e Ar Condicionado -->
@@ -89,10 +147,19 @@ session_start();
                         <image src="imagens/thermometer-low.svg" /></i> Temperatura:
                     </div>
                     <div class="card-body">
-                        <p><?php echo $valor_temperatura ?>ºC</p>
+                        <p><?php echo $temperature->value ?>ºC</p>
                     </div>
                     <div class="card-footer">
-                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                        <p>Atualização: <?php echo $temperature->hour ?>
+                            <br><a class="link" href="#">
+                                <button type="submit" class="btn btn-outline-secondary btn1" onclick="">
+                                    Histórico
+                                </button></a>
+                        </p>
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -101,10 +168,15 @@ session_start();
                 <div class="card">
                     <div class="card-header atuador">Humidade:</div>
                     <div class="card-body">
-                        <p>40<?php echo $valor_humidade ?>%</p>
+                        <p><?php
+                            echo $humidity->value . "%";
+                            ?></p>
                     </div>
                     <div class="card-footer">
-                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                        <p>Atualização:
+                            <?php
+                            echo $humidity->hour;
+                            ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
                     </div>
                 </div>
 
@@ -122,10 +194,12 @@ session_start();
                     <!--O valor da temperatura é dinamico, porque utiliza uma variavel php-->
                     <div class="card-header sensor">Nivel de Dioxido de Carbono:</div>
                     <div class="card-body">
-                        Ligada/Desligada<?php echo $estado_luz ?>
+                        <p><?php
+                            echo $dioxideCarbonLevel->value . "%";
+                            ?></p>
                     </div>
                     <div class="card-footer">
-                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                        <p>Atualização: <?php echo $dioxideCarbonLevel->hour; ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
                     </div>
                 </div>
             </div>
@@ -134,10 +208,10 @@ session_start();
                 <div class="card">
                     <div class="card-header sensor">Aviso Para Abrir a Janela:</div>
                     <div class="card-body">
-                        Ligado/Desligado<?php echo $qualidade_do_ar ?>
+                        <p><?php echo $warningOpenWindow->value ?></p>
                     </div>
                     <div class="card-footer">
-                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                        <p>Atualização: <?php echo $warningOpenWindow->hour ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
                     </div>
                 </div>
             </div>
@@ -152,10 +226,14 @@ session_start();
                     <!--O valor da temperatura é dinamico, porque utiliza uma variavel php-->
                     <div class="card-header sensor">Luz:</div>
                     <div class="card-body">
-                        <button type="button" class="btn btn-outline-secondary">Ligado/Desligado<?php echo $qualidade_do_ar ?></button></a></p>
+                        <button type="button" class="btn btn-outline-atuador" <?php
+                                                                                if (($electricity->value) == "Desligada") {
+                                                                                    echo 'style="background-color: rgb(193, 35, 35); color:white;"';
+                                                                                }
+                                                                                ?>><?php echo $light->value ?></button></a></p>
                     </div>
                     <div class="card-footer">
-                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                        <p>Atualização: <?php echo $light->hour ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
                     </div>
                 </div>
             </div>
@@ -164,10 +242,14 @@ session_start();
                 <div class="card">
                     <div class="card-header sensor">Eletricidade:</div>
                     <div class="card-body">
-                        <button type="button" class="btn btn-outline-secondary">Ligado/Desligado<?php echo $qualidade_do_ar ?></button></a></p>
+                        <button type="button" class="btn btn-outline-atuador" <?php
+                                                                                if (($electricity->value) == "Desligada") {
+                                                                                    echo 'style="background-color: rgb(193, 35, 35); color:white;"';
+                                                                                }
+                                                                                ?>><?php echo $electricity->value ?></button></a></p>
                     </div>
                     <div class="card-footer">
-                        <p>Atualização: <?php echo $hora_temperatura ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
+                        <p>Atualização: <?php echo $electricity->hour ?><br><a class="link" href="#"><button type="button" class="btn btn-outline-secondary">Histórico</button></a></p>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 //SESSION é como se fosse um cofre onde guarda as variaveis que define uma coneção
 //Por defenição a sessão é finalizada quando se fecha o browser.
 session_start();
-include("Contas.php");
+include 'Contas.php'
 ?>
 <!doctype html>
 <html lang="en">
@@ -20,6 +20,28 @@ include("Contas.php");
 
 
     <?php
+    //if (isset($_POST['username'])) {
+    //    echo "O username submetido foi:" . $_POST['username'] . "<br>";
+    //}
+
+    //if (isset($_POST['password'])) {
+    //    echo "A password submetido foi:" . $_POST['password'] . "<br>";
+    //}
+
+    //variável PHP para definir um utilizador válido:
+    //busca o username da tag username do email adress
+    $username = $_POST['username'];
+    //echo "o Usernarme 1: " . $username;
+
+    //para ver ver e depois copiar o hash da password:
+    //echo password_hash($_POST['password'], PASSWORD_DEFAULT);
+    //utilize plicas ('') e não aspas ("") para guardar a hash na variável
+    $password_hash = '$2y$10$qvtQWpTCWsRXpGTSskojGOHTw0rwIomZmDJtJLMVFYWKBVFeskh5G';
+
+
+    //Lab04.Ex.16 
+    //estrutura de decisão (if…else) para confirmar que os dados que 
+    //recebe via POST são iguais aos das credenciais que definiu no exercício anterior. 
     if (password_verify($_POST['password'], $password_hash)) {
         echo 'Password is valid!';
         $_SESSION["username"] = $username;
