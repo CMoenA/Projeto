@@ -92,27 +92,14 @@ session_start();
             <div class="col-sm-12">
                 <div class="card">
                     <!--Cabeçalho do card-->
-                    <div class="card-header sensor">
-                        <div class="dropdown">
-                            <button class="dropbtn">Dropdown</button>
-                            <div class="dropdown-content">
-                                <a href="#" onclick="style=">Temperatura</a>
-                                <a href="#">Humidade</a>
-                                <a href="#">Nivel de Dioxido de Carbono</a>
-                                <a href="#">Aviso Para Abrir a Janela</a>
-                                <a href="#">Luz</a>
-                                <a href="#">Eletricidade</a>
-                            </div>
-                        </div>
-
-                        <label for="dog-names">Choose a dog name:</label>
-                        <select name="dog-names" id="dog-names">
-                            <option value="Temperatura">Temperatura</option>
-                            <option value="Humidade">Humidade</option>
-                            <option value="Carbono">Nivel de Dioxido de Carbono</option>
-                            <option value="Janela">Aviso Para Abrir a Janela</option>
-                            <option value="Luz">Luz</option>
-                            <option value="Eletricidade">Eletricidade</option>
+                    <div class="card-header table">
+                        <select name="logNameselect" id="logNameselect">
+                            <option value="$temperature_log">Temperatura</option>
+                            <option value="humidity_log">Humidade</option>
+                            <option value="dioxideCarbonLevel_log">Nivel de Dioxido de Carbono</option>
+                            <option value="warningOpenWindow_log">Aviso Para Abrir a Janela</option>
+                            <option value="light_log">Luz</option>
+                            <option value="electricity_log">Eletricidade</option>
                         </select>
                     </div>
                     <!--Body do card-->
@@ -127,16 +114,23 @@ session_start();
                             //echo $temperature_log->hour;
                             //echo $temperature_log->log->hour;
                             //echo $temperature_log->log->hour[0];
+
+                            //uma forma de descobrir como chamar os valores é usar o var_dump($temperature_log); 
+                            //e depois adicionar um [] por cada [] depois do nome da variavel. $nomedavariavel[][][]...
+                            //neste caso fica echo $nome['log'][1]['hour'] isto apresentaria o valor  2023/04/26 21:32
                             /*
                             array(1) {
-                                 ["log"]=> array(2) {
-                                     [0]=> array(2) {
-                                         ["value"]=> string(2) "25" ["hour"]=> string(16) "2023/04/26 21:32" }
-                                    [1]=> array(2) {
-                                         ["value"]=> string(2) "25" ["hour"]=> string(16) "2023/04/26 21:32" }
-                                        }
+                                ["log"]=> array(2) {
+                                        [0]=> array(2) {["value"]=> string(2) "25"
+                                        ["hour"]=> string(16) "2023/04/26 21:32"
                                     }
-*/
+                                    [1]=> array(2) {
+                                        ["value"]=> string(2) "25"
+                                        ["hour"]=> string(16) "2023/04/26 21:32"
+                                    }
+                                }
+                            }
+                            */
                             //echo "Date and time: " . $temperature_log['log'][0]['hour'] . " Value: " . $temperature_log['log'][0]['value'];
 
                             //echo var_dump($temperature_log);
@@ -158,15 +152,8 @@ session_start();
                                 //percorre os arrays criando novas linhas <tr></tr> e colunas entre elas <td></td> e imprime os respetivos valor em cada uma
                                 echo "<tr><td>" . $temperature_log['log'][$x]['hour'] . "</td><td>" . $temperature_log['log'][$x]['value'] . '</td></tr>';
                             }
-
-
-
-                            //echo $temperature_log;
-
                             echo '</table>';
                             ?>
-
-
                         </p>
                     </div>
 

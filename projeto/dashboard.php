@@ -53,12 +53,15 @@ session_start();
     $temperature->hour;
     $temperature->value;
 
+    /*
+    todo maybe, validatetion seke
     if (!isset($temperature->hour)) {
         $temperature->hour = $msgValorNaoEncontrado;
     }
     if (!isset($temperature->value)) {
         $temperature->hour = $msgValorNaoEncontrado;
     }
+    */
 
     $temperature_log = json_decode(file_get_contents("http://127.0.0.1/projeto/api/api.php?name=temperature&log=s"));
 
